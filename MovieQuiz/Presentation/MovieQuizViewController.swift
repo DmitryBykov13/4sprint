@@ -93,16 +93,25 @@ final class MovieQuizViewController: UIViewController {
     }
 
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.showNextQuestionOrResult()
-        }
+        self.buttonClicked(isCorrect: true)
     }
     @IBAction private func noButtonClicked(_ sender: Any) {
-        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.showNextQuestionOrResult()
+        self.buttonClicked(isCorrect: false)
+    }
+    
+    private func buttonClicked (isCorrect : Bool){
+        if isCorrect {
+            showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.showNextQuestionOrResult()
+            }
+        } else {
+            showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.showNextQuestionOrResult()
+            }
         }
+        
     }
     
     private func showAnswerResult(isCorrect: Bool){
@@ -117,7 +126,7 @@ final class MovieQuizViewController: UIViewController {
     
     private func showNextQuestionOrResult(){
         imageView.layer.borderWidth = 0
-        imageView.layer.borderColor = UIColor.white.withAlphaComponent(0.0).cgColor
+        imageView.layer.borderColor = UIColor.clear.cgColor
         if currentQuestionIndex == questions.count - 1 {
             if quizeCount == 0 || rightAnswerCount > answersRecord{
                 answersRecord = rightAnswerCount
